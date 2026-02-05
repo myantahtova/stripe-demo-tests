@@ -6,7 +6,7 @@ export const CustomerSearchResponseSchema = z.object({
   url: z.string(),
   has_more: z.boolean(),
   data: z.array(CustomerResponseSchema),
-  next_page: z.string().optional(),
+  next_page: z.string().optional().nullable(),
   total_count: z.number().optional(),
 });
 

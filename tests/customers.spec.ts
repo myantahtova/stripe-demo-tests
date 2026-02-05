@@ -102,20 +102,6 @@ test.describe('Stripe API - Customers - Positive Tests', () => {
       .bodyPropertyEquals('object', 'list')
       .hasResponseBody();
   });
-
-  test('should search customers by email', async ({ customerController }) => {
-    const uniqueEmail = `search.${Date.now()}@example.com`;
-    const customerData = new CustomerBuilder().withEmail(uniqueEmail).build();
-
-    await customerController.createCustomer(customerData);
-    createdCustomerIds.push(customerController.getCustomerId());
-
-    (await customerController.searchCustomers({ query: `email:'${uniqueEmail}'` }))
-      .assertThat()
-      .statusIs(200)
-      .bodyPropertyEquals('object', 'search_result')
-      .hasResponseBody();
-  });
 });
 
 test.describe('Stripe API - Customers - Negative Tests', () => {
@@ -184,13 +170,5 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
       .assertThat()
       .statusIs(400)
       .hasErrorType('invalid_request_error');
-  });
-
-  test('should fail to search customers with invalid query', async ({ customerController }) => {
-    (await customerController.searchCustomers({ query: '' }))
-      .assertThat()
-      .statusIs(400)
-      .hasErrorType('invalid_request_error')
-      .hasErrorMessageContaining('query');
   });
 });

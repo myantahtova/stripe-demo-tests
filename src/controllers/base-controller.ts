@@ -1,6 +1,8 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
 import { attachApiCallDetails } from '@helpers/api-logger';
 import qs from 'qs';
+import { ZodSchema } from 'zod';
+import { ErrorResponseSchema, ErrorResponse } from '@api-schemas/responses/error.response';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -8,6 +10,7 @@ export abstract class BaseController<TController, TAsserter> {
   protected request: APIRequestContext;
   protected lastResponse: APIResponse | null = null;
   protected responseBody: unknown = null;
+  protected errorResponse: ErrorResponse | null = null;
 
   constructor(request: APIRequestContext) {
     this.request = request;
@@ -21,10 +24,10 @@ export abstract class BaseController<TController, TAsserter> {
   private async executeRequest(
     method: HttpMethod,
     path: string,
-    options?: { data?: object; params?: Record<string, string> },
+    options?: { data?: object; params?: Record<string, string>; successResponseSchema?: ZodSchema },
   ): Promise<TController> {
     const url = this.buildUrl(path);
-    const { data, params } = options ?? {};
+    const { data, params, successResponseSchema } = options ?? {};
 
     const formOptions = data
       ? {
@@ -48,34 +51,62 @@ export abstract class BaseController<TController, TAsserter> {
         break;
     }
 
-    await this.parseResponseBody();
     await attachApiCallDetails(method, url, this.lastResponse, data, params);
+    await this.parseResponseBody(successResponseSchema);
 
     return this as unknown as TController;
   }
 
-  async get(path: string, params?: Record<string, string>): Promise<TController> {
-    return this.executeRequest('GET', path, { params });
+  async get(
+    path: string,
+    params?: Record<string, string>,
+    successResponseSchema?: ZodSchema,
+  ): Promise<TController> {
+    return this.executeRequest('GET', path, { params, successResponseSchema });
   }
 
-  async post(path: string, data?: object): Promise<TController> {
-    return this.executeRequest('POST', path, { data });
+  async post(path: string, data?: object, successResponseSchema?: ZodSchema): Promise<TController> {
+    return this.executeRequest('POST', path, { data, successResponseSchema });
   }
 
-  async put(path: string, data?: object): Promise<TController> {
-    return this.executeRequest('PUT', path, { data });
+  async put(path: string, data?: object, successResponseSchema?: ZodSchema): Promise<TController> {
+    return this.executeRequest('PUT', path, { data, successResponseSchema });
   }
 
-  async delete(path: string): Promise<TController> {
-    return this.executeRequest('DELETE', path);
+  async delete(path: string, successResponseSchema?: ZodSchema): Promise<TController> {
+    return this.executeRequest('DELETE', path, { successResponseSchema });
   }
 
-  protected async parseResponseBody(): Promise<void> {
+  protected async parseResponseBody(successResponseSchema?: ZodSchema): Promise<void> {
     try {
       this.responseBody = await this.lastResponse?.json();
     } catch {
       this.responseBody = null;
+      this.errorResponse = null;
+      return;
     }
+
+    this.checkForErrorResponse();
+
+    if (successResponseSchema && !this.isError()) {
+      this.validateSuccessResponse(successResponseSchema);
+    }
+  }
+
+  private checkForErrorResponse(): void {
+    const status = this.lastResponse?.status();
+    const isErrorStatus = status && status >= 400;
+
+    if (!isErrorStatus) {
+      this.errorResponse = null;
+      return;
+    }
+
+    this.errorResponse = ErrorResponseSchema.parse(this.responseBody);
+  }
+
+  private validateSuccessResponse(successResponseSchema: ZodSchema): void {
+    this.responseBody = successResponseSchema.parse(this.responseBody);
   }
 
   getResponse(): APIResponse | null {
@@ -84,6 +115,14 @@ export abstract class BaseController<TController, TAsserter> {
 
   getResponseBody<T>(): T {
     return this.responseBody as T;
+  }
+
+  getErrorResponse(): ErrorResponse | null {
+    return this.errorResponse;
+  }
+
+  isError(): boolean {
+    return this.errorResponse !== null;
   }
 
   getStatus(): number | undefined {
