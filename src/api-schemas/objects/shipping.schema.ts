@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AddressSchema } from '@api-schemas/objects/address.schema.js';
+import { AddressSchema } from '@api-schemas/objects/address.schema';
 
 export const ShippingSchema = z.object({
   address: AddressSchema.optional(),

@@ -1,5 +1,5 @@
-import { Address, AddressSchema } from '@api-schemas/objects/address.schema.js';
-import { BaseBuilder } from '@builders/base-builder.js';
+import { Address, AddressSchema } from '@api-schemas/objects/address.schema';
+import { BaseBuilder } from '@builders/base-builder';
 import { faker } from '@faker-js/faker';
 
 const defaultAddress: Address = {

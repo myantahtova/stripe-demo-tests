@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { CustomFieldSchema } from '@api-schemas/objects/custom-field.schema.js';
-import { RenderingOptionsSchema } from '@api-schemas/objects/rendering-options.schema.js';
+import { CustomFieldSchema } from '@api-schemas/objects/custom-field.schema';
+import { RenderingOptionsSchema } from '@api-schemas/objects/rendering-options.schema';
 
 export const InvoiceSettingsSchema = z.object({
   custom_fields: z.array(CustomFieldSchema).nullable().optional(),

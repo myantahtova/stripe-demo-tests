@@ -1,13 +1,13 @@
-import { Address } from '@api-schemas/objects/address.schema.js';
-import { Shipping } from '@api-schemas/objects/shipping.schema.js';
-import { TaxExempt } from '@api-schemas/objects/tax-exempt.schema.js';
+import { Address } from '@api-schemas/objects/address.schema';
+import { Shipping } from '@api-schemas/objects/shipping.schema';
+import { TaxExempt } from '@api-schemas/objects/tax-exempt.schema';
 import {
   CreateCustomerRequest,
   CreateCustomerRequestSchema,
-} from '@api-schemas/requests/create-customer.request.js';
-import { BaseBuilder } from '@builders/base-builder.js';
-import { AddressBuilder } from '@builders/object-builders/address.builder.js';
-import { MetadataBuilder } from '@builders/object-builders/metadata.builder.js';
+} from '@api-schemas/requests/create-customer.request';
+import { BaseBuilder } from '@builders/base-builder';
+import { AddressBuilder } from '@builders/object-builders/address.builder';
+import { MetadataBuilder } from '@builders/object-builders/metadata.builder';
 import { faker } from '@faker-js/faker';
 
 const defaultCreateCustomerRequest: CreateCustomerRequest = {

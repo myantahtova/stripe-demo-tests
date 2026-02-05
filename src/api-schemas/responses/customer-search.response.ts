@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { CustomerResponseSchema } from '@api-schemas/responses/customer.response.js';
+import { CustomerResponseSchema } from '@api-schemas/responses/customer.response';
 
 export const CustomerSearchResponseSchema = z.object({
   object: z.literal('search_result'),

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { DateRangeFilterSchema } from '@api-schemas/objects/date-range-filter.schema.js';
+import { DateRangeFilterSchema } from '@api-schemas/objects/date-range-filter.schema';
 
 export const ListCustomersRequestSchema = z.object({
   email: z.string().optional(),

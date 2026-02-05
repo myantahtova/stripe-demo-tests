@@ -1,5 +1,5 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
-import { attachApiCallDetails } from '@helpers/api-logger.js';
+import { attachApiCallDetails } from '@helpers/api-logger';
 import qs from 'qs';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -82,8 +82,8 @@ export abstract class BaseController<TController, TAsserter> {
     return this.lastResponse;
   }
 
-  getResponseBody(): unknown {
-    return this.responseBody;
+  getResponseBody<T>(): T {
+    return this.responseBody as T;
   }
 
   getStatus(): number | undefined {

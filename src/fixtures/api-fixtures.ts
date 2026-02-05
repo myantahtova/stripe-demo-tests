@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import { CustomerController } from '@controllers/customer-controller.js';
+import { CustomerController } from '@controllers/customer-controller';
 
 type ApiFixtures = {
   customerController: CustomerController;

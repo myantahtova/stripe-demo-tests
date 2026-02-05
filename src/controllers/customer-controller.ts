@@ -1,11 +1,11 @@
 import { APIRequestContext } from '@playwright/test';
-import { BaseController } from '@controllers/base-controller.js';
-import { CustomerAsserter } from '@asserters/customer-asserter.js';
-import { CreateCustomerRequest } from '@api-schemas/requests/create-customer.request.js';
-import { UpdateCustomerRequest } from '@api-schemas/requests/update-customer.request.js';
-import { CustomerResponse } from '@api-schemas/responses/customer.response.js';
-import { CustomerListResponse } from '@api-schemas/responses/customer-list.response.js';
-import { CustomerSearchResponse } from '@api-schemas/responses/customer-search.response.js';
+import { BaseController } from '@controllers/base-controller';
+import { CustomerAsserter } from '@asserters/customer-asserter';
+import { CreateCustomerRequest } from '@api-schemas/requests/create-customer.request';
+import { UpdateCustomerRequest } from '@api-schemas/requests/update-customer.request';
+import { CustomerResponse } from '@api-schemas/responses/customer.response';
+import { CustomerListResponse } from '@api-schemas/responses/customer-list.response';
+import { CustomerSearchResponse } from '@api-schemas/responses/customer-search.response';
 
 const CUSTOMERS_PATH = '/v1/customers';
 
@@ -14,81 +14,45 @@ export class CustomerController extends BaseController<CustomerController, Custo
     super(request);
   }
 
-  /**
-   * Create a new customer
-   * POST /v1/customers
-   */
-  async createCustomer(params?: CreateCustomerRequest): Promise<CustomerController> {
-    return this.post(CUSTOMERS_PATH, params);
+  async createCustomer(data?: CreateCustomerRequest): Promise<CustomerController> {
+    return this.post(CUSTOMERS_PATH, data);
   }
 
-  /**
-   * Retrieve a customer by ID
-   * GET /v1/customers/:id
-   */
   async retrieveCustomer(customerId: string): Promise<CustomerController> {
     return this.get(`${CUSTOMERS_PATH}/${customerId}`);
   }
 
-  /**
-   * Update a customer
-   * POST /v1/customers/:id
-   */
   async updateCustomer(
     customerId: string,
-    params?: UpdateCustomerRequest,
+    data?: UpdateCustomerRequest,
   ): Promise<CustomerController> {
-    return this.post(`${CUSTOMERS_PATH}/${customerId}`, params);
+    return this.post(`${CUSTOMERS_PATH}/${customerId}`, data);
   }
 
-  /**
-   * Delete a customer
-   * DELETE /v1/customers/:id
-   */
   async deleteCustomer(customerId: string): Promise<CustomerController> {
     return this.delete(`${CUSTOMERS_PATH}/${customerId}`);
   }
 
-  /**
-   * List all customers
-   * GET /v1/customers
-   */
   async listCustomers(params?: Record<string, string>): Promise<CustomerController> {
     return this.get(CUSTOMERS_PATH, params);
   }
 
-  /**
-   * Search customers
-   * GET /v1/customers/search
-   */
   async searchCustomers(params: Record<string, string>): Promise<CustomerController> {
     return this.get(`${CUSTOMERS_PATH}/search`, params);
   }
 
-  /**
-   * Get the response body typed as CustomerResponse
-   */
   getCustomer(): CustomerResponse {
-    return this.getResponseBody() as CustomerResponse;
+    return this.getResponseBody<CustomerResponse>();
   }
 
-  /**
-   * Get the response body typed as CustomerListResponse
-   */
   getCustomerList(): CustomerListResponse {
-    return this.getResponseBody() as CustomerListResponse;
+    return this.getResponseBody<CustomerListResponse>();
   }
 
-  /**
-   * Get the response body typed as CustomerSearchResponse
-   */
   getSearchResult(): CustomerSearchResponse {
-    return this.getResponseBody() as CustomerSearchResponse;
+    return this.getResponseBody<CustomerSearchResponse>();
   }
 
-  /**
-   * Get the customer ID from the response
-   */
   getCustomerId(): string {
     return this.getCustomer().id;
   }

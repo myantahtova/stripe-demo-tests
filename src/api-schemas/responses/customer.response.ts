@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { AddressSchema } from '@api-schemas/objects/address.schema.js';
-import { ShippingSchema } from '@api-schemas/objects/shipping.schema.js';
-import { InvoiceSettingsSchema } from '@api-schemas/objects/invoice-settings.schema.js';
-import { CustomerTaxSchema } from '@api-schemas/objects/customer-tax.schema.js';
-import { TaxExemptSchema } from '@api-schemas/objects/tax-exempt.schema.js';
+import { AddressSchema } from '@api-schemas/objects/address.schema';
+import { ShippingSchema } from '@api-schemas/objects/shipping.schema';
+import { InvoiceSettingsSchema } from '@api-schemas/objects/invoice-settings.schema';
+import { CustomerTaxSchema } from '@api-schemas/objects/customer-tax.schema';
+import { TaxExemptSchema } from '@api-schemas/objects/tax-exempt.schema';
 
 export const CustomerResponseSchema = z.object({
   id: z.string(),

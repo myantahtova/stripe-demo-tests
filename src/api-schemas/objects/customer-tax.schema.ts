@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TaxLocationSchema } from '@api-schemas/objects/tax-location.schema.js';
+import { TaxLocationSchema } from '@api-schemas/objects/tax-location.schema';
 
 export const CustomerTaxSchema = z.object({
   automatic_tax: z.string().optional(),
