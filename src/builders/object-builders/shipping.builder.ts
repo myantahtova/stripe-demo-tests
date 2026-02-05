@@ -1,0 +1,28 @@
+import { Address } from '@api-schemas/objects/address.schema.js';
+import { Shipping, ShippingSchema } from '@api-schemas/objects/shipping.schema.js';
+import { BaseBuilder } from '@builders/base-builder.js';
+import { AddressBuilder } from '@builders/object-builders/address.builder.js';
+import { faker } from '@faker-js/faker';
+
+const defaultShipping: Shipping = {
+  name: faker.person.fullName(),
+  phone: faker.phone.number(),
+  address: new AddressBuilder().withAllFields().build(),
+};
+
+export class ShippingBuilder extends BaseBuilder<Shipping> {
+  protected schema = ShippingSchema;
+  protected defaultFullBody = defaultShipping;
+
+  withName(name: string): this {
+    return this.with('name', name);
+  }
+
+  withPhone(phone: string): this {
+    return this.with('phone', phone);
+  }
+
+  withAddress(address: Address): this {
+    return this.with('address', address);
+  }
+}
