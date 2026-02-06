@@ -34,10 +34,15 @@ stripe-demo-tests/
 
 2. Configure your Stripe API key:
    - Get your test mode secret key from [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys)
-   - Update `.env.local` with your key:
+   - Create a secrets file for your environment:
+     ```bash
+     # For local development
+     echo "STRIPE_SECRET_KEY=sk_test_your_actual_key_here" > .env.local.secrets
+
+     # Or for dev environment
+     echo "STRIPE_SECRET_KEY=sk_test_your_actual_key_here" > .env.dev.secrets
      ```
-     STRIPE_SECRET_KEY=sk_test_your_actual_key_here
-     ```
+   - **Important**: `.secrets` files are gitignored and will not be committed
 
 3. Install Playwright browsers (if needed for debugging):
    ```bash

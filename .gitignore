@@ -21,7 +21,7 @@ playwright/.cache/
 
 # Environment files with real secrets
 .env
-.env.*.local
+*.secrets
 
 # Coverage
 coverage/

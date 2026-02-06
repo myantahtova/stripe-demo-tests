@@ -3,8 +3,15 @@ import dotenv from 'dotenv';
 
 const envName = process.env.npm_config_env ?? process.env.ENV ?? 'local';
 
+// Load base configuration (non-sensitive values)
 dotenv.config({
   path: `./.env.${envName}`,
+});
+
+// Load secrets (overrides base config if present)
+dotenv.config({
+  path: `./.env.${envName}.secrets`,
+  override: true,
 });
 
 export default defineConfig({
