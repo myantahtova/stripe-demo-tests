@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
-import { ChargeStatusEnum } from '@constants/enums';
 import { BaseAsserter } from '@asserters/base-asserter';
+import { ChargeStatusEnum } from '@constants/enums';
 import type { ChargeController } from '@controllers/charge-controller';
 
 export class ChargeAsserter extends BaseAsserter<ChargeController> {

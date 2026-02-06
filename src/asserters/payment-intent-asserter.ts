@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
-import { PaymentIntentStatusEnum } from '@constants/enums';
 import { BaseAsserter } from '@asserters/base-asserter';
+import { PaymentIntentStatusEnum } from '@constants/enums';
 import type { PaymentIntentController } from '@controllers/payment-intent-controller';
 
 export class PaymentIntentAsserter extends BaseAsserter<PaymentIntentController> {

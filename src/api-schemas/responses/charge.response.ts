@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { BillingDetailsSchema } from '@api-schemas/objects/billing-details.schema';
-import { ChargeStatusEnum } from '@constants/enums';
 import { ShippingSchema } from '@api-schemas/objects/shipping.schema';
+import { ChargeStatusEnum } from '@constants/enums';
 
 export const ChargeResponseSchema = z.object({
   id: z.string(),
