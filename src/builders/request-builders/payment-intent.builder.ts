@@ -9,30 +9,31 @@ import {
 import { BaseBuilder } from '@builders/base-builder';
 import { ShippingBuilder } from '@builders/object-builders/shipping.builder';
 
-const defaultCreatePaymentIntentRequest: CreatePaymentIntentRequest = {
-  amount: 2000,
-  currency: 'eur',
-  automatic_payment_methods: undefined,
-  confirm: undefined,
-  customer: undefined,
-  customer_account: undefined,
-  description: faker.lorem.sentence(),
-  mandate_data: undefined,
-  metadata: { order_id: faker.string.alphanumeric(10) },
-  off_session: undefined,
-  payment_method: undefined,
-  payment_method_data: undefined,
-  payment_method_types: undefined,
-  receipt_email: faker.internet.email(),
-  setup_future_usage: undefined,
-  shipping: undefined,
-  statement_descriptor: undefined,
-  statement_descriptor_suffix: undefined,
-};
-
 export class PaymentIntentBuilder extends BaseBuilder<CreatePaymentIntentRequest> {
   protected schema = CreatePaymentIntentRequestSchema;
-  protected defaultFullBody = defaultCreatePaymentIntentRequest;
+
+  protected get defaultFullBody(): CreatePaymentIntentRequest {
+    return {
+      amount: 2000,
+      currency: 'eur',
+      automatic_payment_methods: undefined,
+      confirm: undefined,
+      customer: undefined,
+      customer_account: undefined,
+      description: faker.lorem.sentence(),
+      mandate_data: undefined,
+      metadata: { order_id: faker.string.alphanumeric(10) },
+      off_session: undefined,
+      payment_method: undefined,
+      payment_method_data: undefined,
+      payment_method_types: undefined,
+      receipt_email: faker.internet.email(),
+      setup_future_usage: undefined,
+      shipping: undefined,
+      statement_descriptor: undefined,
+      statement_descriptor_suffix: undefined,
+    };
+  }
 
   withAmount(amount: number): this {
     return this.with('amount', amount);

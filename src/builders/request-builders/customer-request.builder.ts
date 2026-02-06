@@ -11,18 +11,19 @@ import { BaseBuilder } from '@builders/base-builder';
 import { AddressBuilder } from '@builders/object-builders/address.builder';
 import { MetadataBuilder } from '@builders/object-builders/metadata.builder';
 
-const defaultCreateCustomerRequest: CreateCustomerRequest = {
-  email: faker.internet.email(),
-  name: faker.person.fullName(),
-  phone: faker.phone.number(),
-  description: faker.lorem.sentence(),
-  address: new AddressBuilder().withAllFields().build(),
-  metadata: new MetadataBuilder().withAllFields().build(),
-};
-
 export class CustomerBuilder extends BaseBuilder<CreateCustomerRequest> {
   protected schema = CreateCustomerRequestSchema;
-  protected defaultFullBody = defaultCreateCustomerRequest;
+
+  protected get defaultFullBody(): CreateCustomerRequest {
+    return {
+      email: faker.internet.email(),
+      name: faker.person.fullName(),
+      phone: faker.phone.number(),
+      description: faker.lorem.sentence(),
+      address: new AddressBuilder().withAllFields().build(),
+      metadata: new MetadataBuilder().withAllFields().build(),
+    };
+  }
 
   withEmail(email: string): this {
     return this.with('email', email);

@@ -4,14 +4,15 @@ import { BaseBuilder } from '@builders/base-builder';
 export const MetadataSchema = z.record(z.string(), z.string());
 export type Metadata = z.infer<typeof MetadataSchema>;
 
-const defaultMetadata: Metadata = {
-  source: 'automation',
-  environment: 'test',
-};
-
 export class MetadataBuilder extends BaseBuilder<Metadata> {
   protected schema = MetadataSchema;
-  protected defaultFullBody = defaultMetadata;
+
+  protected get defaultFullBody(): Metadata {
+    return {
+      source: 'automation',
+      environment: 'test',
+    };
+  }
 
   withSource(source: string): this {
     return this.with('source', source);

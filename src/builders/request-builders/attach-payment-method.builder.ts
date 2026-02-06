@@ -4,14 +4,15 @@ import {
 } from '@api-schemas/requests/attach-payment-method.request';
 import { BaseBuilder } from '@builders/base-builder';
 
-const defaultAttachPaymentMethodRequest: AttachPaymentMethodRequest = {
-  customer: '',
-  customer_account: undefined,
-};
-
 export class AttachPaymentMethodBuilder extends BaseBuilder<AttachPaymentMethodRequest> {
   protected schema = AttachPaymentMethodRequestSchema;
-  protected defaultFullBody = defaultAttachPaymentMethodRequest;
+
+  protected get defaultFullBody(): AttachPaymentMethodRequest {
+    return {
+      customer: '',
+      customer_account: undefined,
+    };
+  }
 
   withCustomer(customerId: string): this {
     return this.with('customer', customerId);

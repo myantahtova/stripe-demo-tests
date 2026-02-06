@@ -4,15 +4,16 @@ import { Shipping, ShippingSchema } from '@api-schemas/objects/shipping.schema';
 import { BaseBuilder } from '@builders/base-builder';
 import { AddressBuilder } from '@builders/object-builders/address.builder';
 
-const defaultShipping: Shipping = {
-  name: faker.person.fullName(),
-  phone: faker.phone.number(),
-  address: new AddressBuilder().withAllFields().build(),
-};
-
 export class ShippingBuilder extends BaseBuilder<Shipping> {
   protected schema = ShippingSchema;
-  protected defaultFullBody = defaultShipping;
+
+  protected get defaultFullBody(): Shipping {
+    return {
+      name: faker.person.fullName(),
+      phone: faker.phone.number(),
+      address: new AddressBuilder().withAllFields().build(),
+    };
+  }
 
   withName(name: string): this {
     return this.with('name', name);

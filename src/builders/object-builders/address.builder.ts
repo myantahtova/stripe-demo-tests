@@ -2,18 +2,19 @@ import { faker } from '@faker-js/faker';
 import { Address, AddressSchema } from '@api-schemas/objects/address.schema';
 import { BaseBuilder } from '@builders/base-builder';
 
-const defaultAddress: Address = {
-  line1: faker.location.streetAddress(),
-  line2: faker.location.secondaryAddress(),
-  city: faker.location.city(),
-  state: faker.location.state({ abbreviated: true }),
-  postal_code: faker.location.zipCode(),
-  country: faker.location.countryCode('alpha-2'),
-};
-
 export class AddressBuilder extends BaseBuilder<Address> {
   protected schema = AddressSchema;
-  protected defaultFullBody = defaultAddress;
+
+  protected get defaultFullBody(): Address {
+    return {
+      line1: faker.location.streetAddress(),
+      line2: faker.location.secondaryAddress(),
+      city: faker.location.city(),
+      state: faker.location.state({ abbreviated: true }),
+      postal_code: faker.location.zipCode(),
+      country: faker.location.countryCode('alpha-2'),
+    };
+  }
 
   withLine1(line1: string): this {
     return this.with('line1', line1);

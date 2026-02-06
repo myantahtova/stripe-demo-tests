@@ -14,8 +14,9 @@ type Path = string | number | Array<string | number>;
 export abstract class BaseBuilder<T extends object> {
   /**
    * Provide a full, valid default object in subclasses.
+   * Use a getter to ensure fresh data is generated on each access.
    */
-  protected defaultFullBody!: T;
+  protected abstract get defaultFullBody(): T;
 
   /**
    * Provide the Zod schema for the payload type in subclasses.
