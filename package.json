@@ -7,6 +7,9 @@
   "scripts": {
     "test": "npx playwright test",
     "test:ui": "npx playwright test --ui",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:negative": "npx playwright test --grep @negative",
+    "test:e2e": "npx playwright test --grep @e2e",
     "format": "dprint fmt",
     "format:check": "dprint check",
     "lint": "eslint .",

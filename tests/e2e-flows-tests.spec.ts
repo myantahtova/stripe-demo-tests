@@ -3,7 +3,7 @@ import { PaymentIntentBuilder } from '@builders/request-builders/payment-intent.
 import { PaymentIntentStatusEnum } from '@constants/enums';
 import { test } from '@fixtures/api-fixtures.js';
 
-test.describe('E2E Flows', () => {
+test.describe('E2E Flows', { tag: ['@e2e'] }, () => {
   test.afterEach(async ({ customerController }) => {
     const customerId = customerController.getCustomerId();
     if (customerId) {

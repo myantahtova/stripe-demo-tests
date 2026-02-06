@@ -17,42 +17,50 @@ test.describe('Stripe API - Customers - Positive Tests', () => {
     createdCustomerIds = [];
   });
 
-  test('should create a customer with all fields', async ({ customerController }) => {
-    const email = `test.${Date.now()}@example.com`;
-    const name = 'Test Customer';
+  test(
+    'should create a customer with all fields',
+    { tag: '@smoke' },
+    async ({ customerController }) => {
+      const email = `test.${Date.now()}@example.com`;
+      const name = 'Test Customer';
 
-    const customerData = new CustomerBuilder()
-      .withAllFields()
-      .withEmail(email)
-      .withName(name)
-      .build();
+      const customerData = new CustomerBuilder()
+        .withAllFields()
+        .withEmail(email)
+        .withName(name)
+        .build();
 
-    (await customerController
-      .createCustomer(customerData))
-      .assertThat()
-      .statusIs(200)
-      .hasId()
-      .hasEmail(email)
-      .hasName(name);
+      (await customerController
+        .createCustomer(customerData))
+        .assertThat()
+        .statusIs(200)
+        .hasId()
+        .hasEmail(email)
+        .hasName(name);
 
-    createdCustomerIds.push(customerController.getCustomerId());
-  });
+      createdCustomerIds.push(customerController.getCustomerId());
+    },
+  );
 
-  test('should create a customer only with required fields', async ({ customerController }) => {
-    const customerData = new CustomerBuilder()
-      .withRequiredFields()
-      .build();
+  test(
+    'should create a customer only with required fields',
+    { tag: '@smoke' },
+    async ({ customerController }) => {
+      const customerData = new CustomerBuilder()
+        .withRequiredFields()
+        .build();
 
-    (await customerController
-      .createCustomer(customerData))
-      .assertThat()
-      .statusIs(200)
-      .hasId();
+      (await customerController
+        .createCustomer(customerData))
+        .assertThat()
+        .statusIs(200)
+        .hasId();
 
-    createdCustomerIds.push(customerController.getCustomerId());
-  });
+      createdCustomerIds.push(customerController.getCustomerId());
+    },
+  );
 
-  test('should retrieve a customer by ID', async ({ customerController }) => {
+  test('should retrieve a customer by ID', { tag: '@smoke' }, async ({ customerController }) => {
     const email = `retrieve.${Date.now()}@example.com`;
 
     const customerData = new CustomerBuilder()
@@ -149,75 +157,15 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
     createdCustomerIds = [];
   });
 
-  test('should fail to create customer with invalid email', async ({ customerController }) => {
-    const invalidEmail = 'invalid-email';
+  test(
+    'should fail to create customer with invalid email',
+    { tag: '@negative' },
+    async ({ customerController }) => {
+      const invalidEmail = 'invalid-email';
 
-    const customerData = new CustomerBuilder()
-      .withAllFields()
-      .withInvalid('email', invalidEmail)
-      .build();
-
-    (await customerController
-      .createCustomer(customerData))
-      .assertThat()
-      .statusIs(400)
-      .hasErrorType('invalid_request_error')
-      .hasErrorMessageContaining(`Invalid email address: invalid-email`);
-  });
-
-  test('should fail to retrieve non-existent customer', async ({ customerController }) => {
-    const nonExistentId = 'cus_nonexistent123';
-
-    (await customerController
-      .retrieveCustomer(nonExistentId))
-      .assertThat()
-      .statusIs(404)
-      .hasErrorType('invalid_request_error')
-      .hasErrorMessageContaining('No such customer');
-  });
-
-  test('should fail to update non-existent customer', async ({ customerController }) => {
-    const nonExistentId = 'cus_nonexistent123';
-    const updateData = new CustomerBuilder()
-      .withAllFields()
-      .withName('Updated Name')
-      .build();
-
-    (await customerController
-      .updateCustomer(nonExistentId, updateData))
-      .assertThat()
-      .statusIs(404)
-      .hasErrorType('invalid_request_error')
-      .hasErrorMessageContaining('No such customer');
-  });
-
-  test('should fail to delete non-existent customer', async ({ customerController }) => {
-    const nonExistentId = 'cus_nonexistent123';
-
-    (await customerController.deleteCustomer(nonExistentId))
-      .assertThat()
-      .statusIs(404)
-      .hasErrorType('invalid_request_error')
-      .hasErrorMessageContaining('No such customer');
-  });
-
-  test('should fail to create customer with invalid metadata', async ({ customerController }) => {
-    const customerData = new CustomerBuilder()
-      .withEmail(`invalid.metadata.${Date.now()}@example.com`)
-      .withInvalid('metadata', 'invalid-string-instead-of-object')
-      .build();
-
-    (await customerController
-      .createCustomer(customerData))
-      .assertThat()
-      .statusIs(400)
-      .hasErrorType('invalid_request_error');
-  });
-
-  invalidEmailDataSet.forEach(({ value, expectedMessage, description }) => {
-    test(`should fail when email is invalid: ${description}`, async ({ customerController }) => {
       const customerData = new CustomerBuilder()
-        .withInvalid('email', value)
+        .withAllFields()
+        .withInvalid('email', invalidEmail)
         .build();
 
       (await customerController
@@ -225,28 +173,118 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
         .assertThat()
         .statusIs(400)
         .hasErrorType('invalid_request_error')
-        .hasErrorMessageContaining(expectedMessage);
-    });
+        .hasErrorMessageContaining(`Invalid email address: invalid-email`);
+    },
+  );
+
+  test(
+    'should fail to retrieve non-existent customer',
+    { tag: '@negative' },
+    async ({ customerController }) => {
+      const nonExistentId = 'cus_nonexistent123';
+
+      (await customerController
+        .retrieveCustomer(nonExistentId))
+        .assertThat()
+        .statusIs(404)
+        .hasErrorType('invalid_request_error')
+        .hasErrorMessageContaining('No such customer');
+    },
+  );
+
+  test(
+    'should fail to update non-existent customer',
+    { tag: '@negative' },
+    async ({ customerController }) => {
+      const nonExistentId = 'cus_nonexistent123';
+      const updateData = new CustomerBuilder()
+        .withAllFields()
+        .withName('Updated Name')
+        .build();
+
+      (await customerController
+        .updateCustomer(nonExistentId, updateData))
+        .assertThat()
+        .statusIs(404)
+        .hasErrorType('invalid_request_error')
+        .hasErrorMessageContaining('No such customer');
+    },
+  );
+
+  test(
+    'should fail to delete non-existent customer',
+    { tag: '@negative' },
+    async ({ customerController }) => {
+      const nonExistentId = 'cus_nonexistent123';
+
+      (await customerController.deleteCustomer(nonExistentId))
+        .assertThat()
+        .statusIs(404)
+        .hasErrorType('invalid_request_error')
+        .hasErrorMessageContaining('No such customer');
+    },
+  );
+
+  test(
+    'should fail to create customer with invalid metadata',
+    { tag: '@negative' },
+    async ({ customerController }) => {
+      const customerData = new CustomerBuilder()
+        .withEmail(`invalid.metadata.${Date.now()}@example.com`)
+        .withInvalid('metadata', 'invalid-string-instead-of-object')
+        .build();
+
+      (await customerController
+        .createCustomer(customerData))
+        .assertThat()
+        .statusIs(400)
+        .hasErrorType('invalid_request_error');
+    },
+  );
+
+  invalidEmailDataSet.forEach(({ value, expectedMessage, description }) => {
+    test(
+      `should fail when email is invalid: ${description}`,
+      { tag: '@negative' },
+      async ({ customerController }) => {
+        const customerData = new CustomerBuilder()
+          .withInvalid('email', value)
+          .build();
+
+        (await customerController
+          .createCustomer(customerData))
+          .assertThat()
+          .statusIs(400)
+          .hasErrorType('invalid_request_error')
+          .hasErrorMessageContaining(expectedMessage);
+      },
+    );
   });
 
   invalidNameDataSet.forEach(({ value, expectedMessage, description }) => {
-    test(`should fail when name exceeds 256 characters: ${description}`, async ({ customerController }) => {
-      const customerData = new CustomerBuilder()
-        .withEmail(`validation.${Date.now()}@example.com`)
-        .withInvalid('name', value)
-        .build();
+    test(
+      `should fail when name exceeds 256 characters: ${description}`,
+      { tag: '@negative' },
+      async ({ customerController }) => {
+        const customerData = new CustomerBuilder()
+          .withEmail(`validation.${Date.now()}@example.com`)
+          .withInvalid('name', value)
+          .build();
 
-      (await customerController
-        .createCustomer(customerData))
-        .assertThat()
-        .statusIs(400)
-        .hasErrorType('invalid_request_error')
-        .hasErrorMessageContaining(expectedMessage);
-    });
+        (await customerController
+          .createCustomer(customerData))
+          .assertThat()
+          .statusIs(400)
+          .hasErrorType('invalid_request_error')
+          .hasErrorMessageContaining(expectedMessage);
+      },
+    );
   });
 
   invalidDescriptionDataSet.forEach(({ value, expectedMessage, description }) => {
-    test(`should fail when description exceeds 500 characters: ${description}`, async ({ customerController }) => {
+    test(`should fail when description exceeds 500 characters: ${description}`, {
+      tag: '@negative',
+    }, async ({ customerController }) => {
       const customerData = new CustomerBuilder()
         .withEmail(`validation.${Date.now()}@example.com`)
         .withInvalid('description', value)
@@ -262,18 +300,22 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
   });
 
   invalidMetadataDataSet.forEach(({ value, expectedMessage, description }) => {
-    test(`should fail when metadata validation fails: ${description}`, async ({ customerController }) => {
-      const customerData = new CustomerBuilder()
-        .withEmail(`validation.${Date.now()}@example.com`)
-        .withInvalid('metadata', value)
-        .build();
+    test(
+      `should fail when metadata validation fails: ${description}`,
+      { tag: '@negative' },
+      async ({ customerController }) => {
+        const customerData = new CustomerBuilder()
+          .withEmail(`validation.${Date.now()}@example.com`)
+          .withInvalid('metadata', value)
+          .build();
 
-      (await customerController
-        .createCustomer(customerData))
-        .assertThat()
-        .statusIs(400)
-        .hasErrorType('invalid_request_error')
-        .hasErrorMessageContaining(expectedMessage);
-    });
+        (await customerController
+          .createCustomer(customerData))
+          .assertThat()
+          .statusIs(400)
+          .hasErrorType('invalid_request_error')
+          .hasErrorMessageContaining(expectedMessage);
+      },
+    );
   });
 });
