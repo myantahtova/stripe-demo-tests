@@ -1,4 +1,10 @@
 import { CustomerBuilder } from '@builders/request-builders/customer-request.builder';
+import {
+  invalidDescriptionDataSet,
+  invalidEmailDataSet,
+  invalidMetadataDataSet,
+  invalidNameDataSet,
+} from '@constants/invalid-data-sets';
 import { test } from '@fixtures/api-fixtures.js';
 
 test.describe('Stripe API - Customers - Positive Tests', () => {
@@ -206,5 +212,68 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
       .assertThat()
       .statusIs(400)
       .hasErrorType('invalid_request_error');
+  });
+
+  invalidEmailDataSet.forEach(({ value, expectedMessage, description }) => {
+    test(`should fail when email is invalid: ${description}`, async ({ customerController }) => {
+      const customerData = new CustomerBuilder()
+        .withInvalid('email', value)
+        .build();
+
+      (await customerController
+        .createCustomer(customerData))
+        .assertThat()
+        .statusIs(400)
+        .hasErrorType('invalid_request_error')
+        .hasErrorMessageContaining(expectedMessage);
+    });
+  });
+
+  invalidNameDataSet.forEach(({ value, expectedMessage, description }) => {
+    test(`should fail when name exceeds 256 characters: ${description}`, async ({ customerController }) => {
+      const customerData = new CustomerBuilder()
+        .withEmail(`validation.${Date.now()}@example.com`)
+        .withInvalid('name', value)
+        .build();
+
+      (await customerController
+        .createCustomer(customerData))
+        .assertThat()
+        .statusIs(400)
+        .hasErrorType('invalid_request_error')
+        .hasErrorMessageContaining(expectedMessage);
+    });
+  });
+
+  invalidDescriptionDataSet.forEach(({ value, expectedMessage, description }) => {
+    test(`should fail when description exceeds 500 characters: ${description}`, async ({ customerController }) => {
+      const customerData = new CustomerBuilder()
+        .withEmail(`validation.${Date.now()}@example.com`)
+        .withInvalid('description', value)
+        .build();
+
+      (await customerController
+        .createCustomer(customerData))
+        .assertThat()
+        .statusIs(400)
+        .hasErrorType('invalid_request_error')
+        .hasErrorMessageContaining(expectedMessage);
+    });
+  });
+
+  invalidMetadataDataSet.forEach(({ value, expectedMessage, description }) => {
+    test(`should fail when metadata validation fails: ${description}`, async ({ customerController }) => {
+      const customerData = new CustomerBuilder()
+        .withEmail(`validation.${Date.now()}@example.com`)
+        .withInvalid('metadata', value)
+        .build();
+
+      (await customerController
+        .createCustomer(customerData))
+        .assertThat()
+        .statusIs(400)
+        .hasErrorType('invalid_request_error')
+        .hasErrorMessageContaining(expectedMessage);
+    });
   });
 });

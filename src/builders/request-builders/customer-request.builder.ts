@@ -18,7 +18,7 @@ export class CustomerBuilder extends BaseBuilder<CreateCustomerRequest> {
     return {
       email: faker.internet.email(),
       name: faker.person.fullName(),
-      phone: faker.phone.number(),
+      phone: faker.phone.number({ style: 'national' }),
       description: faker.lorem.sentence(),
       address: new AddressBuilder().withAllFields().build(),
       metadata: new MetadataBuilder().withAllFields().build(),
