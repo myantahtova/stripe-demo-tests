@@ -76,7 +76,7 @@ stripe-demo-tests/
 
 ```bash
 # Run all tests
-npm test
+npm run test
 
 # Run tests with UI mode
 npm run test:ui
@@ -87,8 +87,8 @@ npm run test:negative   # Negative tests only
 npm run test:e2e        # E2E tests only
 
 # Run tests for specific environment (default: local)
-npx playwright test --env=dev
-npx playwright test --env=prod
+ENV=dev npm run test
+ENV=prod npm run test
 ```
 
 ## Development

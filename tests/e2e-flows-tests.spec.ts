@@ -100,7 +100,7 @@ test.describe('E2E Flows', { tag: ['@e2e'] }, () => {
       .withAllFields()
       .withCustomer(customerId)
       .withConfirm(true)
-      .withSepaDebit('DE89370400440532013000', {
+      .withSepaDebit('AT611904300234573201', {
         name: customerData.name,
         email: customerData.email,
       })
