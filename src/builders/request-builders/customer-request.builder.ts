@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { Address } from '@api-schemas/objects/address.schema';
 import { Shipping } from '@api-schemas/objects/shipping.schema';
 import { TaxExempt } from '@api-schemas/objects/tax-exempt.schema';
@@ -8,7 +9,6 @@ import {
 import { BaseBuilder } from '@builders/base-builder';
 import { AddressBuilder } from '@builders/object-builders/address.builder';
 import { MetadataBuilder } from '@builders/object-builders/metadata.builder';
-import { faker } from '@faker-js/faker';
 
 const defaultCreateCustomerRequest: CreateCustomerRequest = {
   email: faker.internet.email(),

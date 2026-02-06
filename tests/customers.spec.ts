@@ -1,5 +1,5 @@
-import { test } from '../src/fixtures/api-fixtures.js';
 import { CustomerBuilder } from '@builders/request-builders/customer-request.builder';
+import { test } from '../src/fixtures/api-fixtures.js';
 
 test.describe('Stripe API - Customers - Positive Tests', () => {
   let createdCustomerIds: string[] = [];

@@ -7,12 +7,12 @@
   "scripts": {
     "test": "npx playwright test",
     "test:ui": "npx playwright test --ui",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format": "dprint fmt",
+    "format:check": "dprint check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "type:check": "tsc --noEmit",
-    "pre:commit": "npm run type:check && npm run lint && npm run format:check",
+    "pre:commit": "npm run type:check && npm run lint:fix && npm run format:check",
     "prepare": "husky"
   },
   "repository": {
@@ -33,11 +33,13 @@
     "@playwright/test": "^1.50.1",
     "@types/node": "^22.13.1",
     "dotenv": "^16.4.7",
+    "dprint": "^0.51.1",
     "eslint": "^9.20.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
     "globals": "^16.0.0",
     "husky": "^9.1.7",
     "jiti": "^2.6.1",
-    "prettier": "^3.5.1",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.24.0"
   },

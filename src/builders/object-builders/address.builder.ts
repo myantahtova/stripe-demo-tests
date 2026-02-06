@@ -1,6 +1,6 @@
+import { faker } from '@faker-js/faker';
 import { Address, AddressSchema } from '@api-schemas/objects/address.schema';
 import { BaseBuilder } from '@builders/base-builder';
-import { faker } from '@faker-js/faker';
 
 const defaultAddress: Address = {
   line1: faker.location.streetAddress(),

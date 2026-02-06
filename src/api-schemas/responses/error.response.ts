@@ -1,5 +1,5 @@
-import { StripeErrorsEnum } from '@constants/enums';
 import { z } from 'zod';
+import { StripeErrorsEnum } from '@constants/enums';
 
 export const ErrorResponseSchema = z.object({
   error: z.object({

@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { AddressSchema } from '@api-schemas/objects/address.schema';
-import { ShippingSchema } from '@api-schemas/objects/shipping.schema';
-import { InvoiceSettingsSchema } from '@api-schemas/objects/invoice-settings.schema';
 import { CustomerTaxSchema } from '@api-schemas/objects/customer-tax.schema';
+import { InvoiceSettingsSchema } from '@api-schemas/objects/invoice-settings.schema';
+import { ShippingSchema } from '@api-schemas/objects/shipping.schema';
 import { TaxExemptSchema } from '@api-schemas/objects/tax-exempt.schema';
 
 export const CreateCustomerRequestSchema = z.object({

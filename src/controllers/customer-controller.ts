@@ -1,15 +1,15 @@
 import { APIRequestContext } from '@playwright/test';
-import { BaseController } from '@controllers/base-controller';
-import { CustomerAsserter } from '@asserters/customer-asserter';
 import { CreateCustomerRequest } from '@api-schemas/requests/create-customer.request';
 import { UpdateCustomerRequest } from '@api-schemas/requests/update-customer.request';
-import { CustomerResponse, CustomerResponseSchema } from '@api-schemas/responses/customer.response';
 import {
   CustomerListResponse,
   CustomerListResponseSchema,
 } from '@api-schemas/responses/customer-list.response';
 import { CustomerSearchResponse } from '@api-schemas/responses/customer-search.response';
+import { CustomerResponse, CustomerResponseSchema } from '@api-schemas/responses/customer.response';
 import { DeletedCustomerResponseSchema } from '@api-schemas/responses/deleted-customer.response';
+import { CustomerAsserter } from '@asserters/customer-asserter';
+import { BaseController } from '@controllers/base-controller';
 
 const CUSTOMERS_PATH = '/v1/customers';
 

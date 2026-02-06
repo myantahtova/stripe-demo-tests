@@ -1,8 +1,8 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
-import { attachApiCallDetails } from '@helpers/api-logger';
 import qs from 'qs';
 import { ZodSchema } from 'zod';
-import { ErrorResponseSchema, ErrorResponse } from '@api-schemas/responses/error.response';
+import { ErrorResponse, ErrorResponseSchema } from '@api-schemas/responses/error.response';
+import { attachApiCallDetails } from '@helpers/api-logger';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -24,16 +24,20 @@ export abstract class BaseController<TController, TAsserter> {
   private async executeRequest(
     method: HttpMethod,
     path: string,
-    options?: { data?: object; params?: Record<string, string>; successResponseSchema?: ZodSchema },
+    options?: {
+      data?: object;
+      params?: Record<string, string>;
+      successResponseSchema?: ZodSchema;
+    },
   ): Promise<TController> {
     const url = this.buildUrl(path);
     const { data, params, successResponseSchema } = options ?? {};
 
     const formOptions = data
       ? {
-          data: qs.stringify(data),
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        }
+        data: qs.stringify(data),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      }
       : undefined;
 
     switch (method) {
@@ -65,7 +69,11 @@ export abstract class BaseController<TController, TAsserter> {
     return this.executeRequest('GET', path, { params, successResponseSchema });
   }
 
-  async post(path: string, data?: object, successResponseSchema?: ZodSchema): Promise<TController> {
+  async post(
+    path: string,
+    data?: object,
+    successResponseSchema?: ZodSchema,
+  ): Promise<TController> {
     return this.executeRequest('POST', path, { data, successResponseSchema });
   }
 

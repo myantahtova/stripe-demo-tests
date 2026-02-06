@@ -1,8 +1,8 @@
+import { faker } from '@faker-js/faker';
 import { Address } from '@api-schemas/objects/address.schema';
 import { Shipping, ShippingSchema } from '@api-schemas/objects/shipping.schema';
 import { BaseBuilder } from '@builders/base-builder';
 import { AddressBuilder } from '@builders/object-builders/address.builder';
-import { faker } from '@faker-js/faker';
 
 const defaultShipping: Shipping = {
   name: faker.person.fullName(),
