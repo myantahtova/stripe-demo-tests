@@ -28,6 +28,18 @@ export default tseslint.config(
         '^@(controllers|api-schemas|asserters|fixtures|builders|constants|helpers)/',
     },
     rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['../*', './*'],
+              message:
+                'Relative imports are not allowed. Use path aliases (@controllers/*, @builders/*, etc.) instead.',
+            },
+          ],
+        },
+      ],
       'import/order': [
         'error',
         {
