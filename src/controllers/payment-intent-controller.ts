@@ -37,6 +37,10 @@ export class PaymentIntentController extends BaseController<
     return this.getPaymentIntent().id;
   }
 
+  getChargeId(): string | null | undefined {
+    return this.getPaymentIntent().latest_charge;
+  }
+
   getClientSecret(): string | null | undefined {
     return this.getPaymentIntent().client_secret;
   }

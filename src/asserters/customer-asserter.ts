@@ -18,6 +18,15 @@ export class CustomerAsserter extends BaseAsserter<CustomerController> {
     return this.bodyPropertyEquals('name', expectedName);
   }
 
+  hasDefaultPaymentMethod(expectedPaymentMethodId: string): this {
+    const invoiceSettings = this.controller.getResponseBody<{
+      invoice_settings?: { default_payment_method?: string | null };
+    }>().invoice_settings;
+    expect(invoiceSettings).toBeDefined();
+    expect(invoiceSettings?.default_payment_method).toBe(expectedPaymentMethodId);
+    return this;
+  }
+
   isDeleted(): this {
     return this.bodyPropertyEquals('deleted', true);
   }

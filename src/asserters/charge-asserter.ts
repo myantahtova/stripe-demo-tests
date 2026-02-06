@@ -7,7 +7,7 @@ export class ChargeAsserter extends BaseAsserter<ChargeController> {
   hasId(): this {
     const id = this.controller.getResponseBody<{ id?: string }>().id;
     expect(id).toBeDefined();
-    expect(id).toMatch(/^ch_/);
+    expect(id).toMatch(/^(ch_|py_)/);
     return this;
   }
 

@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Address } from '@api-schemas/objects/address.schema';
+import { InvoiceSettings } from '@api-schemas/objects/invoice-settings.schema';
 import { Shipping } from '@api-schemas/objects/shipping.schema';
 import { TaxExempt } from '@api-schemas/objects/tax-exempt.schema';
 import {
@@ -69,6 +70,14 @@ export class CustomerBuilder extends BaseBuilder<CreateCustomerRequest> {
 
   withInvoicePrefix(prefix: string): this {
     return this.with('invoice_prefix', prefix);
+  }
+
+  withInvoiceSettings(invoiceSettings: Partial<InvoiceSettings>): this {
+    return this.with('invoice_settings', invoiceSettings);
+  }
+
+  withDefaultPaymentMethod(paymentMethodId: string): this {
+    return this.with('invoice_settings', { default_payment_method: paymentMethodId });
   }
 
   withTestClock(testClockId: string): this {
