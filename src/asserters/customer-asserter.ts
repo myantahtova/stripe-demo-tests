@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+import { Address } from '@api-schemas/objects/address.schema';
 import { BaseAsserter } from '@asserters/base-asserter';
 import type { CustomerController } from '@controllers/customer-controller';
 
@@ -25,6 +26,10 @@ export class CustomerAsserter extends BaseAsserter<CustomerController> {
     expect(invoiceSettings).toBeDefined();
     expect(invoiceSettings?.default_payment_method).toBe(expectedPaymentMethodId);
     return this;
+  }
+
+  hasAddress(expectedAddress: Address): this {
+    return this.bodyPropertyEquals('address', expectedAddress);
   }
 
   isDeleted(): this {

@@ -1,3 +1,4 @@
+import { AddressBuilder } from '@builders/object-builders/address.builder';
 import { CustomerBuilder } from '@builders/request-builders/customer-request.builder';
 import {
   invalidDescriptionDataSet,
@@ -59,6 +60,30 @@ test.describe('Stripe API - Customers - Positive Tests', () => {
       createdCustomerIds.push(customerController.getCustomerId());
     },
   );
+
+  test('should create customer with specific address', async ({ customerController }) => {
+    const customAddress = new AddressBuilder()
+      .withLine1('123 Main St')
+      .withLine2('Apt 4B')
+      .withCity('Anytown')
+      .withState('CA')
+      .withPostalCode('12345')
+      .withCountry('US')
+      .build();
+
+    const customerData = new CustomerBuilder()
+      .withAddress(customAddress)
+      .build();
+
+    (await customerController
+      .createCustomer(customerData))
+      .assertThat()
+      .statusIs(200)
+      .hasId()
+      .hasAddress(customAddress);
+
+    createdCustomerIds.push(customerController.getCustomerId());
+  });
 
   test('should retrieve a customer by ID', { tag: '@smoke' }, async ({ customerController }) => {
     const email = `retrieve.${Date.now()}@example.com`;
