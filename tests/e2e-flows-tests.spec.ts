@@ -12,7 +12,7 @@ test.describe('E2E Flows', { tag: ['@e2e'] }, () => {
   });
 
   test('Card Payment Flow', async ({ customerController, paymentMethodController, paymentIntentController }) => {
-    const customerData = new CustomerBuilder().withAllFields().build();
+    const customerData = new CustomerBuilder().withDefaultFields().build();
 
     // Crete a customer
     const customerId = (await customerController
@@ -81,7 +81,7 @@ test.describe('E2E Flows', { tag: ['@e2e'] }, () => {
   test('SEPA Payment Flow', async ({ customerController, paymentIntentController, chargeController }) => {
     // Create SEPA customer
     const customerData = new CustomerBuilder()
-      .withAllFields()
+      .withDefaultFields()
       .withMetadata({ test_run: 'sepa_e2e_001' })
       .build();
 
@@ -97,7 +97,7 @@ test.describe('E2E Flows', { tag: ['@e2e'] }, () => {
 
     // Create SEPA payment intent with mandate
     const paymentIntentData = new PaymentIntentBuilder()
-      .withAllFields()
+      .withDefaultFields()
       .withCustomer(customerId)
       .withConfirm(true)
       .withSepaDebit('AT611904300234573201', {

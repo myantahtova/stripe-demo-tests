@@ -26,7 +26,7 @@ test.describe('Stripe API - Customers - Positive Tests', () => {
       const name = 'Test Customer';
 
       const customerData = new CustomerBuilder()
-        .withAllFields()
+        .withDefaultFields()
         .withEmail(email)
         .withName(name)
         .build();
@@ -189,7 +189,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
       const invalidEmail = 'invalid-email';
 
       const customerData = new CustomerBuilder()
-        .withAllFields()
+        .withDefaultFields()
         .withInvalid('email', invalidEmail)
         .build();
 
@@ -223,7 +223,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
     async ({ customerController }) => {
       const nonExistentId = 'cus_nonexistent123';
       const updateData = new CustomerBuilder()
-        .withAllFields()
+        .withDefaultFields()
         .withName('Updated Name')
         .build();
 

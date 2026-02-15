@@ -16,7 +16,7 @@ export abstract class BaseBuilder<T extends object> {
    * Provide a full, valid default object in subclasses.
    * Use a getter to ensure fresh data is generated on each access.
    */
-  protected abstract get defaultFullBody(): T;
+  protected abstract get defaultBody(): T;
 
   /**
    * Provide the Zod schema for the payload type in subclasses.
@@ -48,8 +48,8 @@ export abstract class BaseBuilder<T extends object> {
   /**
    * Start with every field from the model's full object.
    */
-  withAllFields(): this {
-    this.workingCopy = _.cloneDeep(this.defaultFullBody);
+  withDefaultFields(): this {
+    this.workingCopy = _.cloneDeep(this.defaultBody);
     return this;
   }
 
@@ -57,7 +57,7 @@ export abstract class BaseBuilder<T extends object> {
    * Start with only the required keys populated from the model.
    */
   withRequiredFields(): this {
-    this.workingCopy = _.pick(this.defaultFullBody, this.getRequiredKeys()) as Partial<T>;
+    this.workingCopy = _.pick(this.defaultBody, this.getRequiredKeys()) as Partial<T>;
     return this;
   }
 

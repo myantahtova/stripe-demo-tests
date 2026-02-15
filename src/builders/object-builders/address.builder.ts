@@ -5,7 +5,7 @@ import { BaseBuilder } from '@builders/base-builder';
 export class AddressBuilder extends BaseBuilder<Address> {
   protected schema = AddressSchema;
 
-  protected get defaultFullBody(): Address {
+  protected get defaultBody(): Address {
     return {
       line1: faker.location.streetAddress(),
       line2: faker.location.secondaryAddress(),

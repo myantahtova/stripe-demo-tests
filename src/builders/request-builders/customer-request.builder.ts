@@ -14,14 +14,14 @@ import { MetadataBuilder } from '@builders/object-builders/metadata.builder';
 export class CustomerBuilder extends BaseBuilder<CreateCustomerRequest> {
   protected schema = CreateCustomerRequestSchema;
 
-  protected get defaultFullBody(): CreateCustomerRequest {
+  protected get defaultBody(): CreateCustomerRequest {
     return {
       email: faker.internet.email(),
       name: faker.person.fullName(),
       phone: faker.phone.number({ style: 'national' }),
       description: faker.lorem.sentence(),
-      address: new AddressBuilder().withAllFields().build(),
-      metadata: new MetadataBuilder().withAllFields().build(),
+      address: new AddressBuilder().withDefaultFields().build(),
+      metadata: new MetadataBuilder().withDefaultFields().build(),
     };
   }
 

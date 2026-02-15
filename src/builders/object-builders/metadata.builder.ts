@@ -7,7 +7,7 @@ export type Metadata = z.infer<typeof MetadataSchema>;
 export class MetadataBuilder extends BaseBuilder<Metadata> {
   protected schema = MetadataSchema;
 
-  protected get defaultFullBody(): Metadata {
+  protected get defaultBody(): Metadata {
     return {
       source: 'automation',
       environment: 'test',

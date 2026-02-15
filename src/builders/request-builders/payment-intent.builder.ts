@@ -12,7 +12,7 @@ import { ShippingBuilder } from '@builders/object-builders/shipping.builder';
 export class PaymentIntentBuilder extends BaseBuilder<CreatePaymentIntentRequest> {
   protected schema = CreatePaymentIntentRequestSchema;
 
-  protected get defaultFullBody(): CreatePaymentIntentRequest {
+  protected get defaultBody(): CreatePaymentIntentRequest {
     return {
       amount: 2000,
       currency: 'eur',
@@ -76,7 +76,7 @@ export class PaymentIntentBuilder extends BaseBuilder<CreatePaymentIntentRequest
   }
 
   withShippingDetails(): this {
-    return this.with('shipping', new ShippingBuilder().withAllFields().build());
+    return this.with('shipping', new ShippingBuilder().withDefaultFields().build());
   }
 
   withStatementDescriptor(descriptor: string): this {

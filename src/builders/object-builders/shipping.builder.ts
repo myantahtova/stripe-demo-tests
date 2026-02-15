@@ -7,11 +7,11 @@ import { AddressBuilder } from '@builders/object-builders/address.builder';
 export class ShippingBuilder extends BaseBuilder<Shipping> {
   protected schema = ShippingSchema;
 
-  protected get defaultFullBody(): Shipping {
+  protected get defaultBody(): Shipping {
     return {
       name: faker.person.fullName(),
       phone: faker.phone.number(),
-      address: new AddressBuilder().withAllFields().build(),
+      address: new AddressBuilder().withDefaultFields().build(),
     };
   }
 
