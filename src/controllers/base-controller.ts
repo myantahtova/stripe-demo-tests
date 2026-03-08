@@ -1,6 +1,6 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
 import qs from 'qs';
-import { ZodSchema } from 'zod';
+import { ZodType } from 'zod';
 import { ErrorResponse, ErrorResponseSchema } from '@api-schemas/responses/error.response';
 import { attachApiCallDetails } from '@helpers/api-logger';
 
@@ -22,7 +22,7 @@ export abstract class BaseController<TController, TAsserter> {
     options?: {
       data?: object;
       params?: Record<string, string>;
-      successResponseSchema?: ZodSchema;
+      successResponseSchema?: ZodType;
     },
   ): Promise<TController> {
     const { data, params, successResponseSchema } = options ?? {};
@@ -61,7 +61,7 @@ export abstract class BaseController<TController, TAsserter> {
   async get(
     path: string,
     params?: Record<string, string>,
-    successResponseSchema?: ZodSchema,
+    successResponseSchema?: ZodType,
   ): Promise<TController> {
     return this.executeRequest('GET', path, { params, successResponseSchema });
   }
@@ -69,20 +69,20 @@ export abstract class BaseController<TController, TAsserter> {
   async post(
     path: string,
     data?: object,
-    successResponseSchema?: ZodSchema,
+    successResponseSchema?: ZodType,
   ): Promise<TController> {
     return this.executeRequest('POST', path, { data, successResponseSchema });
   }
 
-  async put(path: string, data?: object, successResponseSchema?: ZodSchema): Promise<TController> {
+  async put(path: string, data?: object, successResponseSchema?: ZodType): Promise<TController> {
     return this.executeRequest('PUT', path, { data, successResponseSchema });
   }
 
-  async delete(path: string, successResponseSchema?: ZodSchema): Promise<TController> {
+  async delete(path: string, successResponseSchema?: ZodType): Promise<TController> {
     return this.executeRequest('DELETE', path, { successResponseSchema });
   }
 
-  protected async parseResponseBody(successResponseSchema?: ZodSchema): Promise<void> {
+  protected async parseResponseBody(successResponseSchema?: ZodType): Promise<void> {
     try {
       this.responseBody = await this.lastResponse?.json();
     } catch {
@@ -110,7 +110,7 @@ export abstract class BaseController<TController, TAsserter> {
     this.errorResponse = ErrorResponseSchema.parse(this.responseBody);
   }
 
-  private validateSuccessResponse(successResponseSchema: ZodSchema): void {
+  private validateSuccessResponse(successResponseSchema: ZodType): void {
     this.responseBody = successResponseSchema.parse(this.responseBody);
   }
 
