@@ -55,8 +55,11 @@ export abstract class BaseController<TController, TAsserter> {
         break;
     }
 
-    await attachApiCallDetails(method, url, this.lastResponse, data, params);
-    await this.parseResponseBody(successResponseSchema);
+    try {
+      await this.parseResponseBody(successResponseSchema);
+    } finally {
+      await attachApiCallDetails(method, url, this.lastResponse, data, this.responseBody, params);
+    }
 
     return this as unknown as TController;
   }

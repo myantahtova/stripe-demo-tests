@@ -8,16 +8,10 @@ export async function attachApiCallDetails(
   url: string,
   response: APIResponse,
   requestBody: unknown,
+  responseBody: unknown,
   queryParams?: Record<string, string>,
 ): Promise<void> {
   const status = response.status();
-
-  let responseBody: unknown;
-  try {
-    responseBody = await response.json();
-  } catch {
-    responseBody = await response.text();
-  }
 
   const apiCallDetails = {
     request: {
