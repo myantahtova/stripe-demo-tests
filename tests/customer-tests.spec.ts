@@ -1,12 +1,7 @@
 import { AddressBuilder } from '@builders/object-builders/address.builder';
 import { CustomerBuilder } from '@builders/request-builders/customer-request.builder';
 import { StripeErrorsEnum } from '@constants/enums';
-import {
-  invalidDescriptionDataSet,
-  invalidEmailDataSet,
-  invalidMetadataDataSet,
-  invalidNameDataSet,
-} from '@constants/invalid-data-sets';
+import * as dataSets from '@constants/invalid-data-sets';
 import { test } from '@fixtures/api-fixtures.js';
 
 test.describe('Stripe API - Customers - Positive Tests', () => {
@@ -244,7 +239,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
     },
   );
 
-  invalidEmailDataSet.forEach(({ value, expectedMessage, description }) => {
+  dataSets.invalidEmailDataSet.forEach(({ value, expectedMessage, description }) => {
     test(
       `should fail when email is invalid: ${description}`,
       { tag: '@negative' },
@@ -263,7 +258,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
     );
   });
 
-  invalidNameDataSet.forEach(({ value, expectedMessage, description }) => {
+  dataSets.invalidNameDataSet.forEach(({ value, expectedMessage, description }) => {
     test(
       `should fail when name exceeds 256 characters: ${description}`,
       { tag: '@negative' },
@@ -283,7 +278,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
     );
   });
 
-  invalidDescriptionDataSet.forEach(({ value, expectedMessage, description }) => {
+  dataSets.invalidDescriptionDataSet.forEach(({ value, expectedMessage, description }) => {
     test(`should fail when description exceeds 500 characters: ${description}`, {
       tag: '@negative',
     }, async ({ customerController }) => {
@@ -301,7 +296,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
     });
   });
 
-  invalidMetadataDataSet.forEach(({ value, expectedMessage, description }) => {
+  dataSets.invalidMetadataDataSet.forEach(({ value, expectedMessage, description }) => {
     test(
       `should fail when metadata validation fails: ${description}`,
       { tag: '@negative' },
