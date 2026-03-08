@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+import { StripeErrorsEnum } from '@constants/enums';
 import { BaseController } from '@controllers/base-controller';
 
 export class BaseAsserter<TController extends BaseController<unknown, unknown>> {
@@ -26,9 +27,7 @@ export class BaseAsserter<TController extends BaseController<unknown, unknown>> 
     return this;
   }
 
-  hasErrorType(
-    expectedType: 'api_error' | 'card_error' | 'idempotency_error' | 'invalid_request_error',
-  ): this {
+  hasErrorType(expectedType: StripeErrorsEnum): this {
     const body = this.controller.getResponseBody<{ error?: { type?: string } }>();
     expect(body?.error?.type).toBe(expectedType);
     return this;

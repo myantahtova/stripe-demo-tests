@@ -1,5 +1,6 @@
 import { AddressBuilder } from '@builders/object-builders/address.builder';
 import { CustomerBuilder } from '@builders/request-builders/customer-request.builder';
+import { StripeErrorsEnum } from '@constants/enums';
 import {
   invalidDescriptionDataSet,
   invalidEmailDataSet,
@@ -173,7 +174,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
         .createCustomer(customerData))
         .assertThat()
         .statusIs(400)
-        .hasErrorType('invalid_request_error')
+        .hasErrorType(StripeErrorsEnum.INVALID_REQUEST_ERROR)
         .hasErrorMessageContaining(`Invalid email address: invalid-email`);
     },
   );
@@ -188,7 +189,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
         .retrieveCustomer(nonExistentId))
         .assertThat()
         .statusIs(404)
-        .hasErrorType('invalid_request_error')
+        .hasErrorType(StripeErrorsEnum.INVALID_REQUEST_ERROR)
         .hasErrorMessageContaining('No such customer');
     },
   );
@@ -207,7 +208,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
         .updateCustomer(nonExistentId, updateData))
         .assertThat()
         .statusIs(404)
-        .hasErrorType('invalid_request_error')
+        .hasErrorType(StripeErrorsEnum.INVALID_REQUEST_ERROR)
         .hasErrorMessageContaining('No such customer');
     },
   );
@@ -221,7 +222,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
       (await customerController.deleteCustomer(nonExistentId))
         .assertThat()
         .statusIs(404)
-        .hasErrorType('invalid_request_error')
+        .hasErrorType(StripeErrorsEnum.INVALID_REQUEST_ERROR)
         .hasErrorMessageContaining('No such customer');
     },
   );
@@ -239,7 +240,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
         .createCustomer(customerData))
         .assertThat()
         .statusIs(400)
-        .hasErrorType('invalid_request_error');
+        .hasErrorType(StripeErrorsEnum.INVALID_REQUEST_ERROR);
     },
   );
 
@@ -256,7 +257,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
           .createCustomer(customerData))
           .assertThat()
           .statusIs(400)
-          .hasErrorType('invalid_request_error')
+          .hasErrorType(StripeErrorsEnum.INVALID_REQUEST_ERROR)
           .hasErrorMessageContaining(expectedMessage);
       },
     );
@@ -276,7 +277,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
           .createCustomer(customerData))
           .assertThat()
           .statusIs(400)
-          .hasErrorType('invalid_request_error')
+          .hasErrorType(StripeErrorsEnum.INVALID_REQUEST_ERROR)
           .hasErrorMessageContaining(expectedMessage);
       },
     );
@@ -295,7 +296,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
         .createCustomer(customerData))
         .assertThat()
         .statusIs(400)
-        .hasErrorType('invalid_request_error')
+        .hasErrorType(StripeErrorsEnum.INVALID_REQUEST_ERROR)
         .hasErrorMessageContaining(expectedMessage);
     });
   });
@@ -314,7 +315,7 @@ test.describe('Stripe API - Customers - Negative Tests', () => {
           .createCustomer(customerData))
           .assertThat()
           .statusIs(400)
-          .hasErrorType('invalid_request_error')
+          .hasErrorType(StripeErrorsEnum.INVALID_REQUEST_ERROR)
           .hasErrorMessageContaining(expectedMessage);
       },
     );
