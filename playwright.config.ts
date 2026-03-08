@@ -31,6 +31,12 @@ export default defineConfig({
   projects: [
     {
       name: 'stripe-api',
+      testDir: './tests',
+    },
+    {
+      name: 'scripts',
+      testDir: './scripts',
+      testMatch: '**/*.spec.ts',
     },
   ],
 });

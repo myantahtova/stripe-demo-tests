@@ -10,6 +10,8 @@
     "test:smoke": "npx playwright test --grep @smoke",
     "test:negative": "npx playwright test --grep @negative",
     "test:e2e": "npx playwright test --grep @e2e",
+    "cleanup:dry": "CLEANUP_DRY_RUN=true npx playwright test --project=scripts --grep @cleanup",
+    "cleanup": "CLEANUP_DRY_RUN=false npx playwright test --project=scripts --grep @cleanup",
     "format": "dprint fmt",
     "format:check": "dprint check",
     "lint": "eslint .",

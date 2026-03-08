@@ -25,6 +25,6 @@
       "@helpers/*": ["src/helpers/*"]
     }
   },
-  "include": ["src/**/*", "tests/**/*", "playwright.config.ts", "eslint.config.ts"],
+  "include": ["src/**/*", "tests/**/*", "scripts/**/*", "playwright.config.ts", "eslint.config.ts"],
   "exclude": ["node_modules", "dist", "build"]
 }
