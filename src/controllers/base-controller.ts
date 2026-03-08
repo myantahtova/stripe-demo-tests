@@ -16,11 +16,6 @@ export abstract class BaseController<TController, TAsserter> {
     this.request = request;
   }
 
-  protected buildUrl(path: string): string {
-    const base = process.env.BASE_URL;
-    return `${base}${path}`;
-  }
-
   private async executeRequest(
     method: HttpMethod,
     path: string,
@@ -30,7 +25,6 @@ export abstract class BaseController<TController, TAsserter> {
       successResponseSchema?: ZodSchema;
     },
   ): Promise<TController> {
-    const url = this.buildUrl(path);
     const { data, params, successResponseSchema } = options ?? {};
 
     const formOptions = data
@@ -42,23 +36,23 @@ export abstract class BaseController<TController, TAsserter> {
 
     switch (method) {
       case 'GET':
-        this.lastResponse = await this.request.get(url, { params });
+        this.lastResponse = await this.request.get(path, { params });
         break;
       case 'POST':
-        this.lastResponse = await this.request.post(url, formOptions);
+        this.lastResponse = await this.request.post(path, formOptions);
         break;
       case 'PUT':
-        this.lastResponse = await this.request.put(url, formOptions);
+        this.lastResponse = await this.request.put(path, formOptions);
         break;
       case 'DELETE':
-        this.lastResponse = await this.request.delete(url);
+        this.lastResponse = await this.request.delete(path);
         break;
     }
 
     try {
       await this.parseResponseBody(successResponseSchema);
     } finally {
-      await attachApiCallDetails(method, url, this.lastResponse, data, this.responseBody, params);
+      await attachApiCallDetails(method, path, this.lastResponse, data, this.responseBody, params);
     }
 
     return this as unknown as TController;
