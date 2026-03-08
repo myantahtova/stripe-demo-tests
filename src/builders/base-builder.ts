@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import _ from 'lodash';
-import { type ZodObject, type ZodRawShape, type ZodTypeAny } from 'zod';
+import { type ZodObject, type ZodRawShape, type ZodType } from 'zod';
 
 type Path = string | number | Array<string | number>;
 
@@ -21,7 +21,7 @@ export abstract class BaseBuilder<T extends object> {
   /**
    * Provide the Zod schema for the payload type in subclasses.
    */
-  protected abstract schema: ZodTypeAny;
+  protected abstract schema: ZodType;
 
   protected workingCopy: Partial<T> = {};
 
