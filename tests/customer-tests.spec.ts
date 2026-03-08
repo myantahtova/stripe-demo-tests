@@ -9,13 +9,8 @@ import {
 import { test } from '@fixtures/api-fixtures.js';
 
 test.describe('Stripe API - Customers - Positive Tests', () => {
-  let createdCustomerIds: string[] = [];
-
   test.afterEach(async ({ customerController }) => {
-    for (const customerId of createdCustomerIds) {
-      await customerController.deleteCustomer(customerId);
-    }
-    createdCustomerIds = [];
+    await customerController.deleteCreatedCustomers();
   });
 
   test(
@@ -38,8 +33,6 @@ test.describe('Stripe API - Customers - Positive Tests', () => {
         .hasId()
         .hasEmail(email)
         .hasName(name);
-
-      createdCustomerIds.push(customerController.getCustomerId());
     },
   );
 
@@ -56,8 +49,6 @@ test.describe('Stripe API - Customers - Positive Tests', () => {
         .assertThat()
         .statusIs(200)
         .hasId();
-
-      createdCustomerIds.push(customerController.getCustomerId());
     },
   );
 
@@ -81,8 +72,6 @@ test.describe('Stripe API - Customers - Positive Tests', () => {
       .statusIs(200)
       .hasId()
       .hasAddress(customAddress);
-
-    createdCustomerIds.push(customerController.getCustomerId());
   });
 
   test('should retrieve a customer by ID', { tag: '@smoke' }, async ({ customerController }) => {
@@ -96,7 +85,6 @@ test.describe('Stripe API - Customers - Positive Tests', () => {
       .createCustomer(customerData);
 
     const customerId = customerController.getCustomerId();
-    createdCustomerIds.push(customerId);
 
     (await customerController
       .retrieveCustomer(customerId))
@@ -114,7 +102,6 @@ test.describe('Stripe API - Customers - Positive Tests', () => {
 
     await customerController.createCustomer(customerData);
     const customerId = customerController.getCustomerId();
-    createdCustomerIds.push(customerId);
 
     const updatedName = 'Updated Customer Name';
     const updatedDescription = 'Updated description';
@@ -154,14 +141,12 @@ test.describe('Stripe API - Customers - Positive Tests', () => {
     const customerData = new CustomerBuilder().withEmail(email1).build();
 
     await customerController.createCustomer(customerData);
-    createdCustomerIds.push(customerController.getCustomerId());
 
     const customerData2 = new CustomerBuilder()
       .withEmail(email2)
       .build();
 
     await customerController.createCustomer(customerData2);
-    createdCustomerIds.push(customerController.getCustomerId());
 
     (await customerController
       .listCustomers({ limit: '10' }))
@@ -173,15 +158,6 @@ test.describe('Stripe API - Customers - Positive Tests', () => {
 });
 
 test.describe('Stripe API - Customers - Negative Tests', () => {
-  let createdCustomerIds: string[] = [];
-
-  test.afterEach(async ({ customerController }) => {
-    for (const customerId of createdCustomerIds) {
-      await customerController.deleteCustomer(customerId);
-    }
-    createdCustomerIds = [];
-  });
-
   test(
     'should fail to create customer with invalid email',
     { tag: '@negative' },

@@ -5,7 +5,6 @@ import {
   CustomerListResponse,
   CustomerListResponseSchema,
 } from '@api-schemas/responses/customer-list.response';
-import { CustomerSearchResponse } from '@api-schemas/responses/customer-search.response';
 import { CustomerResponse, CustomerResponseSchema } from '@api-schemas/responses/customer.response';
 import { DeletedCustomerResponseSchema } from '@api-schemas/responses/deleted-customer.response';
 import { CustomerAsserter } from '@asserters/customer-asserter';
@@ -14,12 +13,20 @@ import { BaseController } from '@controllers/base-controller';
 const CUSTOMERS_PATH = '/v1/customers';
 
 export class CustomerController extends BaseController<CustomerController, CustomerAsserter> {
+  private createdIds: string[] = [];
+
   constructor(request: APIRequestContext) {
     super(request);
   }
 
   async createCustomer(data?: CreateCustomerRequest): Promise<CustomerController> {
-    return this.post(CUSTOMERS_PATH, data, CustomerResponseSchema);
+    await this.post(CUSTOMERS_PATH, data, CustomerResponseSchema);
+
+    if (!this.isError()) {
+      this.createdIds.push(this.getCustomerId());
+    }
+
+    return this;
   }
 
   async retrieveCustomer(customerId: string): Promise<CustomerController> {
@@ -41,16 +48,31 @@ export class CustomerController extends BaseController<CustomerController, Custo
     return this.get(CUSTOMERS_PATH, params, CustomerListResponseSchema);
   }
 
+  async deleteCreatedCustomers(): Promise<void> {
+    const idsToDelete = [...this.createdIds];
+
+    for (const customerId of idsToDelete) {
+      await this.deleteCustomer(customerId);
+
+      const status = this.getStatus();
+      if (status === 404) {
+        continue;
+      }
+
+      if (this.isError()) {
+        throw new Error(`Failed to clean up customer ${customerId}. Status: ${status}`);
+      }
+    }
+
+    this.createdIds = [];
+  }
+
   getCustomer(): CustomerResponse {
     return this.getResponseBody<CustomerResponse>();
   }
 
   getCustomerList(): CustomerListResponse {
     return this.getResponseBody<CustomerListResponse>();
-  }
-
-  getSearchResult(): CustomerSearchResponse {
-    return this.getResponseBody<CustomerSearchResponse>();
   }
 
   getCustomerId(): string {

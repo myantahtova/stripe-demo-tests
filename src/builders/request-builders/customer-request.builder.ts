@@ -10,6 +10,7 @@ import {
 import { BaseBuilder } from '@builders/base-builder';
 import { AddressBuilder } from '@builders/object-builders/address.builder';
 import { MetadataBuilder } from '@builders/object-builders/metadata.builder';
+import { AUTOMATION_CUSTOMER_PREFIX } from '@constants/test-data-prefixes';
 
 export class CustomerBuilder extends BaseBuilder<CreateCustomerRequest> {
   protected schema = CreateCustomerRequestSchema;
@@ -17,7 +18,7 @@ export class CustomerBuilder extends BaseBuilder<CreateCustomerRequest> {
   protected get defaultBody(): CreateCustomerRequest {
     return {
       email: faker.internet.email(),
-      name: faker.person.fullName(),
+      name: `${AUTOMATION_CUSTOMER_PREFIX}_${faker.person.fullName()}`,
       phone: faker.phone.number({ style: 'national' }),
       description: faker.lorem.sentence(),
       address: new AddressBuilder().withDefaultFields().build(),
